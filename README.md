@@ -38,3 +38,8 @@ curl -X POST -H "Authorization: Bearer $(gcloud auth print-identity-token)" \
 ```
 
 2. Go to [Pub/sub, subscriptions](https://console.cloud.google.com/cloudpubsub/subscription), click on the subscription, click on PULL and check the messages.
+
+
+## Known issues
+- Access Denied: Grant Cloud Run Invoker to your user and/or service account
+- Unauthenticated when running `curl`: authenticate gcloud with `gcloud auth application-default login`
