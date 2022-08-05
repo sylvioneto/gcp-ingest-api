@@ -6,6 +6,7 @@ from flask import Flask, request
 from google.cloud import pubsub_v1
 
 app = Flask(__name__)
+app.config.from_pyfile('settings.py')
 
 
 @app.route("/", methods=['POST'])
@@ -15,9 +16,11 @@ def publish():
         # TO-DO - If you need to validate the request, add your code here
 
         # read env vars
-        project_id = read_env_var("PROJECT_ID")
-        topic_id = read_env_var("TOPIC_ID")
-        source_system = read_env_var("SOURCE_SYSTEM")
+        project_id = app.config.get("PROJECT_ID")
+        topic_id = app.config.get("TOPIC_ID")
+        source_system = app.config.get("SOURCE_SYSTEM")
+
+        print(project_id)
 
         # Pub/sub publisher
         publisher = pubsub_v1.PublisherClient()
@@ -27,6 +30,9 @@ def publish():
         # Get the request data
         data = request.get_data()
 
+        if not source_system:
+            source_system = "unknown"
+
         # Publish the message to Pub/sub
         future = publisher.publish(topic_path, data, source_system=source_system, image="gcp-ingest-api")
         logging.info(future.result())
@@ -35,14 +41,6 @@ def publish():
         return 'error:{}'.format(ex), http.HTTPStatus.INTERNAL_SERVER_ERROR
 
     return 'success'
-
-
-# Get env vars and log error if not found
-def read_env_var(var_name):
-    var_value = os.environ.get(var_name)
-    if not var_value:
-        logging.error("Missing env var {}={}".format(var_name, var_value))
-    return var_value
 
 
 if __name__ == "__main__":
