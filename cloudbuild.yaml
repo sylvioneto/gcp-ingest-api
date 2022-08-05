@@ -13,28 +13,11 @@ steps:
   - 'push'
   - '${_IMAGE_NAME}'
 
-# Deploy container image to Cloud Run
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  entrypoint: gcloud
-  args: 
-  - 'run'
-  - 'deploy'
-  - 'gcp-ingest-api'
-  - '--image'
-  - '${_IMAGE_NAME}'
-  - '--region'
-  - 'us-central1'
-  - '--update-env-vars'
-  - 'PROJECT_ID=$PROJECT_ID,TOPIC_ID=${_TOPIC_ID}'
-
 substitutions:
-    _IMAGE_NAME: 'gcr.io/${PROJECT_ID}/gcp-ingest-api:${BUILD_ID}'
+    _IMAGE_NAME: us-central1-docker.pkg.dev/${PROJECT_ID}/docker-repo/gcp-ingest-api:${BUILD_ID}
 
 options:
     dynamic_substitutions: true
-    substitution_option: 'ALLOW_LOOSE'
 
 images:
 - ${_IMAGE_NAME}
-
-
