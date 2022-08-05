@@ -36,8 +36,8 @@ def publish():
         # Publish the message to Pub/sub
         future = publisher.publish(topic_path, data, attrs=msg_attrs)
         logging.info(future.result())
-    except Exception:
-        return 'error', http.HTTPStatus.INTERNAL_SERVER_ERROR
+    except Exception as ex:
+        return 'error:{}'.format(ex), http.HTTPStatus.INTERNAL_SERVER_ERROR
 
     return 'success'
 
