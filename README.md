@@ -19,7 +19,21 @@ flask --debug run
 
 
 ## Build & Deploy
-1. Run Cloud Build to build and deploy the container to Cloud Run using your Topic ID
+1. Set your project id with gcloud
+```
+gcloud config set project <your-project-id>
+```
+
+2. Run Cloud Build to build & deploy the container to Cloud Run using your Topic ID
 ```
 gcloud builds submit . --config cloudbuild.yaml --substitutions _TOPIC_ID=<YOUR_TOPIC_ID>
 ```
+
+## Testing
+1. Post a message to the API URL
+```
+curl -X POST -d "test1" https://<your cloud run url> 
+```
+
+2. Go to Pub/sub, subscriptions, and pull the messages from your Topic's subscriptions
+
