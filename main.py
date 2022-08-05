@@ -8,7 +8,7 @@ from google.cloud import pubsub_v1
 app = Flask(__name__)
 
 
-@app.route("/", methods = ['POST'])
+@app.route("/", methods=['POST'])
 def publish():
     try:
         # Request validation
@@ -17,6 +17,7 @@ def publish():
         # read env vars
         project_id = read_env_var("PROJECT_ID")
         topic_id = read_env_var("TOPIC_ID")
+        source_system = read_env_var("SOURCE_SYSTEM")
 
         # Pub/sub publisher
         publisher = pubsub_v1.PublisherClient()
@@ -25,12 +26,18 @@ def publish():
 
         # Get the request data
         data = request.get_data()
-        
+
+        # message attributes
+        msg_attrs = {
+            "source_system": source_system,
+            "image": "gcp-ingest-api"
+        }
+
         # Publish the message to Pub/sub
-        future = publisher.publish(topic_path, data)
+        future = publisher.publish(topic_path, data, attrs=msg_attrs)
         logging.info(future.result())
     except Exception:
-        return 'error', http.HTTPStatus.INTERNAL_SERVER_ERROR    
+        return 'error', http.HTTPStatus.INTERNAL_SERVER_ERROR
 
     return 'success'
 
