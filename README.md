@@ -32,8 +32,9 @@ gcloud builds submit . --config cloudbuild.yaml --substitutions _TOPIC_ID=<YOUR_
 ## Testing
 1. Post a message to the API URL
 ```
-curl -X POST -H "Authorization: Bearer $(gcloud auth print-identity-token)" -d "test1" https://<your cloud run url> 
+curl -X POST -H "Authorization: Bearer $(gcloud auth print-identity-token)" \
+    -d "{"key_name": "key_value"}" \
+    https://<your-cloud-run-url> 
 ```
 
-2. Go to Pub/sub, subscriptions, and pull the messages from your Topic's subscriptions
-
+2. Go to [Pub/sub, subscriptions](https://console.cloud.google.com/cloudpubsub/subscription), click on the subscription, click on PULL and check the messages.
