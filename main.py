@@ -20,8 +20,6 @@ def publish():
         topic_id = app.config.get("TOPIC_ID")
         source_system = app.config.get("SOURCE_SYSTEM")
 
-        print(project_id)
-
         # Pub/sub publisher
         publisher = pubsub_v1.PublisherClient()
         topic_path = publisher.topic_path(project_id, topic_id)
