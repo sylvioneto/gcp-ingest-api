@@ -26,7 +26,6 @@ steps:
   - 'us-central1'
   - '--update-env-vars'
   - 'PROJECT_ID=$PROJECT_ID,TOPIC_ID=${_TOPIC_ID}'
-  - '--allow-unauthenticated'
 
 substitutions:
     _IMAGE_NAME: 'gcr.io/${PROJECT_ID}/gcp-ingest-api:${BUILD_ID}'

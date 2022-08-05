@@ -13,7 +13,7 @@ pip install -r requirements.txt
 
 Change it according to your needs, then test it locally with 
 ```
-export FLASK_APP=app
+export FLASK_APP=main.py
 flask --debug run
 ```
 
@@ -32,7 +32,7 @@ gcloud builds submit . --config cloudbuild.yaml --substitutions _TOPIC_ID=<YOUR_
 ## Testing
 1. Post a message to the API URL
 ```
-curl -X POST -d "test1" https://<your cloud run url> 
+curl -X POST -H "Authorization: Bearer $(gcloud auth print-identity-token)" -d "test1" https://<your cloud run url> 
 ```
 
 2. Go to Pub/sub, subscriptions, and pull the messages from your Topic's subscriptions
