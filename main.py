@@ -27,14 +27,8 @@ def publish():
         # Get the request data
         data = request.get_data()
 
-        # message attributes
-        msg_attrs = {
-            "source_system": source_system,
-            "image": "gcp-ingest-api"
-        }
-
         # Publish the message to Pub/sub
-        future = publisher.publish(topic_path, data, attrs=msg_attrs)
+        future = publisher.publish(topic_path, data, source_system=source_system, image="gcp-ingest-api")
         logging.info(future.result())
     except Exception as ex:
         logging.error(ex)
