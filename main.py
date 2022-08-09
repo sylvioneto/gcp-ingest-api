@@ -15,18 +15,15 @@ def publish():
         # Request validation
         # TO-DO - If you need to validate the request, add your code here
 
-        PROJECT_ID = app.config.get("PROJECT_ID")
-        TOPIC_ID = app.config.get("TOPIC_ID")
-        SOURCE_SYSTEM = app.config.get("SOURCE_SYSTEM")
-
         # Pub/sub publisher
         publisher = pubsub_v1.PublisherClient()
-        topic_path = publisher.topic_path(PROJECT_ID, TOPIC_ID)
+        topic_path = publisher.topic_path(app.config.get("PROJECT_ID"), app.config.get("TOPIC_ID"))
         logging.info("Topic path {}".format(topic_path))
 
         # Get the request data
         data = request.get_data()
 
+        SOURCE_SYSTEM = app.config.get("SOURCE_SYSTEM")
         if not SOURCE_SYSTEM:
             SOURCE_SYSTEM = "unknown"
 
@@ -42,4 +39,4 @@ def publish():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
+    app.run(debug=False, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
