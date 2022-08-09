@@ -8,6 +8,10 @@ from google.cloud import pubsub_v1
 app = Flask(__name__)
 app.config.from_pyfile('settings.py')
 
+PROJECT_ID = app.config.get("PROJECT_ID")
+TOPIC_ID = app.config.get("TOPIC_ID")
+SOURCE_SYSTEM = app.config.get("SOURCE_SYSTEM")
+
 
 @app.route("/", methods=['POST'])
 def publish():
@@ -15,14 +19,9 @@ def publish():
         # Request validation
         # TO-DO - If you need to validate the request, add your code here
 
-        # read env vars
-        project_id = app.config.get("PROJECT_ID")
-        topic_id = app.config.get("TOPIC_ID")
-        source_system = app.config.get("SOURCE_SYSTEM")
-
         # Pub/sub publisher
         publisher = pubsub_v1.PublisherClient()
-        topic_path = publisher.topic_path(project_id, topic_id)
+        topic_path = publisher.topic_path(PROJECT_ID, TOPIC_ID)
         logging.info("Topic path {}".format(topic_path))
 
         # Get the request data
@@ -32,7 +31,8 @@ def publish():
             source_system = "unknown"
 
         # Publish the message to Pub/sub
-        future = publisher.publish(topic_path, data, source_system=source_system, image="gcp-ingest-api")
+        future = publisher.publish(
+            topic_path, data, source_system=SOURCE_SYSTEM, image="gcp-ingest-api")
         logging.info(future.result())
     except Exception as ex:
         logging.error(ex)
