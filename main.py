@@ -8,16 +8,16 @@ from google.cloud import pubsub_v1
 app = Flask(__name__)
 app.config.from_pyfile('settings.py')
 
-PROJECT_ID = app.config.get("PROJECT_ID")
-TOPIC_ID = app.config.get("TOPIC_ID")
-SOURCE_SYSTEM = app.config.get("SOURCE_SYSTEM")
-
 
 @app.route("/", methods=['POST'])
 def publish():
     try:
         # Request validation
         # TO-DO - If you need to validate the request, add your code here
+
+        PROJECT_ID = app.config.get("PROJECT_ID")
+        TOPIC_ID = app.config.get("TOPIC_ID")
+        SOURCE_SYSTEM = app.config.get("SOURCE_SYSTEM")
 
         # Pub/sub publisher
         publisher = pubsub_v1.PublisherClient()
