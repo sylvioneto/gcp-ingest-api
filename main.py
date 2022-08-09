@@ -27,8 +27,8 @@ def publish():
         # Get the request data
         data = request.get_data()
 
-        if not source_system:
-            source_system = "unknown"
+        if not SOURCE_SYSTEM:
+            SOURCE_SYSTEM = "unknown"
 
         # Publish the message to Pub/sub
         future = publisher.publish(
