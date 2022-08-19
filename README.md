@@ -16,6 +16,10 @@ Change it according to your needs, then test it locally with
 export FLASK_APP=main.py
 flask --debug run
 ```
+Post a message
+```
+curl http://127.0.0.1:5000?entity=person -d "John" 
+```
 
 
 ## Build & Deploy

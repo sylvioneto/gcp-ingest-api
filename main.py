@@ -5,32 +5,30 @@ from wsgiref import validate
 from flask import Flask, request
 from google.cloud import pubsub_v1
 
-app = Flask(__name__)
-app.config.from_pyfile('settings.py')
 
+PROJECT_ID = os.environ.get("PROJECT_ID")
+TOPIC_ID = os.environ.get("TOPIC_ID")
+
+app = Flask(__name__)
 
 @app.route("/", methods=['POST'])
 def publish():
     try:
         # Request validation
+        args = request.args
+        entity = args.get("entity")
+
+        # Get the request data
+        data = request.get_data()
+        
         # TO-DO - If you need to validate the request, add your code here
 
         # Pub/sub publisher
         publisher = pubsub_v1.PublisherClient()
         topic_path = publisher.topic_path(app.config.get("PROJECT_ID"), app.config.get("TOPIC_ID"))
-        logging.info("Topic path {}".format(topic_path))
-
-        # Get the request data
-        data = request.get_data()
-
-        SOURCE_SYSTEM = app.config.get("SOURCE_SYSTEM")
-        if not SOURCE_SYSTEM:
-            SOURCE_SYSTEM = "unknown"
-
+        
         # Publish the message to Pub/sub
-        future = publisher.publish(
-            topic_path, data, source_system=SOURCE_SYSTEM, image="gcp-ingest-api")
-        logging.info(future.result())
+        publisher.publish(topic_path, data, entity=entity)
     except Exception as ex:
         logging.error(ex)
         return 'error:{}'.format(ex), http.HTTPStatus.INTERNAL_SERVER_ERROR
