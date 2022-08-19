@@ -44,11 +44,11 @@ gcloud builds submit . --config cloudbuild.yaml
 ## Testing
 1. Deploy the image to Cloud Run as a service informing the TOPIC_ID and PROJECT_ID where the data ingested should be storage.
 
-2. Post a message to the Service's URL
+2. Post a message to the Service's URL, for example
 ```
 curl -X POST -H "Authorization: Bearer $(gcloud auth print-identity-token)" \
-    -d "{"key_name": "key_value"}" \
-    https://<your-cloud-run-url> 
+    -d "{"order_id": "1awq2"}" \
+    https://<your-cloud-run-url>/?entity=order-event
 ```
 
 3. Go to [Pub/sub, subscriptions](https://console.cloud.google.com/cloudpubsub/subscription), click on the subscription, click on PULL and check the messages.

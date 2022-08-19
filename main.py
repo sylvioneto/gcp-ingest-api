@@ -25,7 +25,7 @@ def publish():
 
         # Pub/sub publisher
         publisher = pubsub_v1.PublisherClient()
-        topic_path = publisher.topic_path(app.config.get("PROJECT_ID"), app.config.get("TOPIC_ID"))
+        topic_path = publisher.topic_path(PROJECT_ID, TOPIC_ID)
         
         # Publish the message to Pub/sub
         publisher.publish(topic_path, data, entity=entity)
