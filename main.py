@@ -17,6 +17,8 @@ def publish():
         # Request validation
         args = request.args
         entity = args.get("entity")
+        if not entity:
+            entity = "unknown"
 
         # Get the request data
         data = request.get_data()

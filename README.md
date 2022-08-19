@@ -1,6 +1,7 @@
 # GCP Ingest API
 
 Use this code to create a data ingest API that receives HTTP request and post them to Pub/sub.
+You can use the parameter `entity` to route your messages on Pub/sub.
 
 
 ## Develop
